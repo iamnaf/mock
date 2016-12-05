@@ -1,6 +1,6 @@
 "use strict"
 class Course{
-    constructor(code,title,xid,dxids){
+    constructor(title,code,xid,dxids){
         this.title = title;
         this.code = code;
         this.xid = xid;
