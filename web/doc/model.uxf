@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.3">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>140</x>
+      <y>60</y>
+      <w>210</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>_Faculty_
+--
+name: String
+departments: Array
+setName()
+getNumberofDepartments(): number
+addDepartment()
+removeDepartment()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>400</x>
+      <y>60</y>
+      <w>210</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>_Department_
+--
+name: String
+Levels: Array
+setName()
+geLevels(): number
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>140</x>
+      <y>240</y>
+      <w>210</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>_Level_
+--
+level: number
+courses: Array
+getNumberofCourses(): number
+addCourse()
+removeCourse()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>150</x>
+      <y>450</y>
+      <w>210</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>_Question_
+--
+title: string
+options: array
+answer: number
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>450</x>
+      <y>240</y>
+      <w>210</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>_Course_
+--
+questions: Array
+code: string
+title: string
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
