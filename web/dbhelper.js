@@ -1,15 +1,18 @@
 "use strict";
-class Dbhelper{
-    static name = "storage.db";
-    static faculty_table = new Table("faculty",["name","xid"]);
-    static department_table = new Table("department",["name","xid","fxid"]);
-    static course_table = new Table("course",["title","code","xid","dxid"]);
-    static question_table = new Table("question",["title","answer","xid","cxid"]);
-}
 class Table{
     constructor(name,columns){
         this.name = name;
         this.columns = columns;
     }
 }
+
+class Dbhelper{
+    static getName() {return "storage.db";}
+    static getFacultyTable() {return new Table("faculty",["name","xid"]);}
+    static getDepartmentTable() {return new Table("department",["name","xid","fxid"]);}
+    static getCourseTable() {return new Table("course",["title","code","xid","dxid"]);}
+    static getQuestionTable(){ return new Table("question",["title","answer","xid","cxid"]);}
+}
+
+module.exports = Dbhelper;
 
