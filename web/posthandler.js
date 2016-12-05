@@ -3,6 +3,7 @@ var purl = require("url");
 var querystring = require("querystring");
 var Faculty = require("./models/faculty.js");
 var Department = require("./models/department.js");
+var Course = require("./models/course.js");
 var dbh = require("./dbhelper.js");
 var Helper = require("./helper.js");
 
@@ -18,6 +19,9 @@ function addFaculty(faculty){
 }
 function addDepartment(department){
     db.run("INSERT INTO "+dt.name+" VALUES (?,?,?);",[department.name,department.xid,department.fxid]);
+}
+function addCourse(course){
+    db.run("INSERT INTO "+ct.name+" VALUES (?,?,?,?);",[course.title,course.code,course.xid,course.dxid]);
 }
 
 
@@ -60,6 +64,22 @@ function poster(url,response){
 
     }
     else if(pathname === Helper.getRootCourse()){
+        var ctitle = query.title;
+        var ccode = query.code;
+        var cxid = query.xid;
+        var cdxids = query.dxids;
+        if(ctitle && ccode  && cxid && cdxids){
+            var nCourse = new Course(ctitle,ccode,cxid,cdxids);
+            addCourse(nCourse);
+            response.write("course added succesfully");
+            response.end();
+
+        }
+        else{
+            response.write("request is invalid");
+            response.end();
+            return;
+        }
 
     }
     else if(pathname === Helper.getRootQuestion()){

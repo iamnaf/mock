@@ -80,6 +80,18 @@ function displayDepartments(response){
 }
 
 function displayCourses(response){
+    var courses = [];
+    db.each("SELECT * FROM "+ct.name+";",
+    function(err,row){
+        var nCourse = new Course(row.title,row.code,row.xid,row.dxid);
+        courses.push(nCourse);
+
+    },
+    function(err,val){
+        response.write(JSON.stringify(courses));
+        response.end();
+
+    });
     
 }
 
