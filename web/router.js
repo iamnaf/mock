@@ -96,6 +96,18 @@ function displayCourses(response){
 }
 
 function displayQuestions(response){
+    var questions = [];
+    db.each("SELECT * FROM "+qt.name+";",
+    function(err,row){
+        var nQuestion = new Question(row.title,row.answer,row.xid,row.cxid);
+        questions.push(nQuestion);
+
+    },
+    function(err,val){
+        response.write(JSON.stringify(questions));
+        response.end();
+
+    });
    
 }
 module.exports = route;

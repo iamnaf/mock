@@ -4,6 +4,7 @@ var querystring = require("querystring");
 var Faculty = require("./models/faculty.js");
 var Department = require("./models/department.js");
 var Course = require("./models/course.js");
+var Question = require("./models/question.js");
 var dbh = require("./dbhelper.js");
 var Helper = require("./helper.js");
 
@@ -22,6 +23,9 @@ function addDepartment(department){
 }
 function addCourse(course){
     db.run("INSERT INTO "+ct.name+" VALUES (?,?,?,?);",[course.title,course.code,course.xid,course.dxid]);
+}
+function addQuestion(question){
+    db.run("INSERT INTO "+qt.name+" VALUES (?,?,?,?);",[question.title,question.answer,question.xid,question.cxid]);
 }
 
 
@@ -83,6 +87,21 @@ function poster(url,response){
 
     }
     else if(pathname === Helper.getRootQuestion()){
+        var qtitle = query.title;
+        var qanswer = query.answer;
+        var qxid = query.xid;
+        var qcxid = query.cxid;
+        if(qtitle && qanswer && qxid && qcxid){
+            var nQuestion = new Question(qtitle,qanswer,qxid,qcxid);
+            addQuestion(nQuestion);
+            response.write("question added succesfully");
+            response.end();
+
+        }
+        else{
+            response.write("invalid request");
+            response.end();
+        }
 
     }
     else{
