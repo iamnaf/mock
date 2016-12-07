@@ -13,6 +13,7 @@ class Helper{
     static getRootCourse(){return "/courses";}
     static getRootQuestion(){return "/questions";}
     static getRoots(){return ["/faculties","/departments","/courses","/questions"];}
+    static getRoot(){return "/";}
     static toSelectQuery(columns,table,query){
         if(Array.isArray(columns))var columns = columns.join(" , ");
         var props = this.getListOfObjectProps(query);
