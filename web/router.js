@@ -34,6 +34,9 @@ function route(url,res){
     else if(path === Helper.getRootFaculty() && isObjectEmpty(query)){
         displayFaculties(res);
     }
+    else if(path === Helper.getRootFaculty() && !isObjectEmpty(query)){
+        displayFacultiesbyOptions(query,res);
+    }
     else if(path === Helper.getRootDepartment() && isObjectEmpty(query)){
         displayDepartments(res);
     }
@@ -45,12 +48,68 @@ function route(url,res){
     }
     else{
         res.write("path not specified");
+        res.end();
     }
     
 
 
 }
 
+function displayFacultiesbyOptions(obj,response){
+    var qname = obj.name;
+    var qxid = obj.xid;
+    console.log(qname+" "+qxid);
+    if(qname && qxid){
+        //display by name and xid
+        var faculties = [];
+        db.each("SELECT * FROM "+ft.name+" WHERE name= \""+qname+"\" AND xid= \""+qxid+"\";",
+        function(err,row){
+            var nFaculty = new Faculty(row.name,row.xid);
+            faculties.push(nFaculty);
+
+        },
+        function(err,val){
+            response.write(JSON.stringify(faculties));
+            response.end();
+
+        });
+    }
+    else if(qname && !qxid){
+        //display by name
+        var faculties = [];
+        db.each("SELECT * FROM "+ft.name+" WHERE name=\""+qname+"\";",
+        function(err,row){
+            var nFaculty = new Faculty(row.name,row.xid);
+            faculties.push(nFaculty);
+
+        },
+        function(err,val){
+            response.write(JSON.stringify(faculties));
+            response.end();
+
+        });
+
+    }
+    else if(!qname && qxid){
+        //display by xid
+        var faculties = [];
+        db.each("SELECT * FROM "+ft.name+" WHERE xid=\""+qxid+"\";",
+        function(err,row){
+            var nFaculty = new Faculty(row.name,row.xid);
+            faculties.push(nFaculty);
+
+        },
+        function(err,val){
+            response.write(JSON.stringify(faculties));
+            response.end();
+
+        });
+    }
+    else{
+        response.write("invalid request");
+        response.end();
+    }
+}
 
 function displayFaculties(response){
     var faculties = [];
