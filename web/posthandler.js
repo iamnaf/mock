@@ -14,100 +14,43 @@ var dt = dbh.getDepartmentTable();
 var ct = dbh.getCourseTable();
 var qt = dbh.getQuestionTable(); 
 
-
-function addFaculty(faculty){
-    db.run("INSERT INTO "+ft.name+" VALUES (?,?);",[faculty.name,faculty.xid]);
+function insertError(err){
+    if(err){
+        console.log("insert not successful");
+        console.log(err);
+        return;
+    }
+    console.log("insert succesful");
 }
-function addDepartment(department){
-    db.run("INSERT INTO "+dt.name+" VALUES (?,?,?);",[department.name,department.xid,department.fxid]);
-}
-function addCourse(course){
-    db.run("INSERT INTO "+ct.name+" VALUES (?,?,?,?);",[course.title,course.code,course.xid,course.dxid]);
-}
-function addQuestion(question){
-    db.run("INSERT INTO "+qt.name+" VALUES (?,?,?,?);",[question.title,question.answer,question.xid,question.cxid]);
-}
-
 
 
 function poster(url,response){
     var pathname = purl.parse(url).pathname;
-    var query = querystring.parse(purl.parse(url).query);
+    var query = querystring.parse(purl.parse(url).query);;
     if(pathname === Helper.getRootFaculty()){
-        var fname = query.name;
-        var fxid = query.xid;
-        if(fname && fxid){
-            var nFaculty = new Faculty(fname,fxid);
-            addFaculty(nFaculty);
-            response.write("faculty added successfully");
-            response.end();
-        }
-        else{
-            response.write("request is invalid");
-            response.end();
-            return;
-        }
-
+        var qs = Helper.toInsertQuery("letmepass",ft,query);
+        db.exec(qs,insertError);
 
     }
     else if(pathname === Helper.getRootDepartment()){
-        var dname = query.name;
-        var dxid = query.xid;
-        var dfxid = query.fxid;
-        if(dname && dxid && dfxid){
-            var nDepartment = new Department(dname,dxid,dfxid);
-            addDepartment(nDepartment);
-            response.write("department added succesfully");
-            response.end();
-        }
-        else{
-            response.write("request is invalid");
-            response.end();
-            return;
-        }
-
+       var qs = Helper.toInsertQuery("letmepass",dt,query);
+       db.exec(qs,insertError);
     }
     else if(pathname === Helper.getRootCourse()){
-        var ctitle = query.title;
-        var ccode = query.code;
-        var cxid = query.xid;
-        var cdxids = query.dxids;
-        if(ctitle && ccode  && cxid && cdxids){
-            var nCourse = new Course(ctitle,ccode,cxid,cdxids);
-            addCourse(nCourse);
-            response.write("course added succesfully");
-            response.end();
-
-        }
-        else{
-            response.write("request is invalid");
-            response.end();
-            return;
-        }
+        var qs = Helper.toInsertQuery("letmepass",ct,query);
+        db.exec(qs,insertError);
 
     }
     else if(pathname === Helper.getRootQuestion()){
-        var qtitle = query.title;
-        var qanswer = query.answer;
-        var qxid = query.xid;
-        var qcxid = query.cxid;
-        if(qtitle && qanswer && qxid && qcxid){
-            var nQuestion = new Question(qtitle,qanswer,qxid,qcxid);
-            addQuestion(nQuestion);
-            response.write("question added succesfully");
-            response.end();
-
-        }
-        else{
-            response.write("invalid request");
-            response.end();
-        }
+       var qs = Helper.toInsertQuery("letmepass",qt,query);
+       db.exec(qs,insertError);
 
     }
     else{
         response.write("Not a valid request")
 
     }
+    response.end();
     
 
 }
