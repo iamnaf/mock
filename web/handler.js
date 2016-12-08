@@ -39,141 +39,60 @@ function homeRequested(query,method,response){
 }
 
 function facultyRequested(query,method,response){
-    if(method === "GET"){
-        var faculties = [];
-        var qs = Helper.toSelectQuery("*",ft,query);
-        db.each(qs,
-        function(err,row){
-            var nFaculty = new Faculty(row.name,row.xid);
-            faculties.push(nFaculty);
-
-        }
-        ,function(err,val){
-            response.writeHead(200,{"Content-Type":"text/json"});
-            response.write(JSON.stringify(faculties));
-            response.end();
-
-        });
-
-    }
-    else if(method === "POST"){
-        var qs = Helper.toInsertQuery("letmepass",ft,query);
-        db.exec(qs,insertError);
-        response.writeHead(200,{"Content-Type":"text/plain"});
-        response.write("insert succesful");
-        response.end();
-
-    }
-    else{
-        response.writeHead(404,{"Content-Type":"text/plain"});
-        response.write("404 Not found");
-        response.end();
-
-    }
-         
-
+    meth[method](ft,"*",query,Faculty,response);
 }
 function departmentRequested(query,method,response){
-    if(method==="GET"){
-        var departments = [];
-        var qs = Helper.toSelectQuery("*",dt,query);
-        db.each(qs,
-            function(err,row){
-                var nDepartment = new Department(row.name,row.xid,row.fxid);
-                departments.push(nDepartment);
-            },
-            function(err,val){
-                response.writeHead(200,{"Content-Type":"text/json"});
-                response.write(JSON.stringify(departments));
-                response.end();
-            });
-
-    }
-    else if(method === "POST"){
-        var qs = Helper.toInsertQuery("letmepass",dt,query);
-        db.exec(qs,insertError);
-        response.writeHead(200,{"Content-Type":"text/plain"});
-        response.write("insert successful");
-        response.end();
-
-    }
-    else{
-        response.writeHead(404,{"Content-Type":"text/plain"});
-        response.write("404 Not found");
-        response.end();
-    }
+    meth[method](dt,"*",query,Department,response);
 
  }
 function courseRequested(query,method,response){
-    if(method === "GET"){
-        var courses = [];
-        var qs = Helper.toSelectQuery("*",ct,query);
-        db.each(qs,
-        function(err,row){
-            var nCourse = new Course(row.title,row.code,row.xid,row.dxids);
-            courses.push(nCourse);
-        },
-        function(err,val){
-            response.writeHead(200,{"Content-Type":"text/json"});
-            response.write(JSON.stringify(courses));
-            response.end();
-        });
-
-    }
-    else if(method === "POST"){
-        var qs = Helper.toInsertQuery("letmepass",ct,query);
-        db.exec(qs,insertError);
-        response.writeHead(200,{"Content-Type":"text/plain"});
-        response.write("insert succesful");
-        response.end();
-
-    }
-    else{
-        response.writeHead(404,{"Content-Type":"text/plain"});
-        response.write("404 Not found");
-        response.end();
-    }
+    meth[method](ct,"*",query,Course,response);
 }
 function questionRequested(query,method,response){
-    if(method === "GET"){
-        var questions = [];
-        var qs = Helper.toSelectQuery("*",qt,query);
-        db.each(qs,
-        function(err,row){
-            var nQuestion = new Question(row.title,row.answer,row.xid,row.cxid);
-            questions.push(nQuestion);
+    meth[method](qt,"*",query,Question,response);
+}
 
-         },
-        function(err,val){
-            response.writeHead(200,{"Content-Type":"text/json"});
-            response.write(JSON.stringify(questions));
-            response.end();
 
-        });
+function getMethod(table,columns,query,clas,response){
+    var result = [];
+    var qs = Helper.toSelectQuery(columns,table,query);
+    db.each(qs,
+    function(err,row){
+        var props = Helper.getListOfObjectProps(row);
+        var nObject = new clas();
+        for(var i = 0;i<props.length;i++){
+            nObject[props[i]] = row[props[i]];
+        }
+        result.push(nObject);
 
-    }
-    else if(method === "POST"){
-        var qs = Helper.toInsertQuery("letmepass",qt,query);
-        db.exec(qs,insertError);
-        response.writeHead(200,{"Content-Type":"text/plain"});
-        response.write("insert succesful");
+    },
+    function(err,val){
+        response.writeHead(200,{"Content-Type":"text/json"});
+        response.write(JSON.stringify(result));
         response.end();
 
-    }
-    else{
-        response.writeHead(404,{"Content-Type":"text/plain"});
-        response.write("404 Not found");
-        response.end();
-    }
+    });
+
+}
+function postMethod(table,columns,query,clas,response){
+    var qs = Helper.toInsertQuery("letmepass",table,query);
+    db.exec(qs,insertError);
+    response.writeHead(200,{"Content-Type":"text/plain"});
+    response.write("insert succesful");
+    response.end();
 
 }
 
 var handle = {};
-handle["/"] = homeRequested;
-handle["/faculties"] = facultyRequested;
-handle["/departments"] = departmentRequested;
-handle["/courses"] = courseRequested;
-handle["/questions"] = questionRequested;
+handle[Helper.getRoot()] = homeRequested;
+handle[Helper.getRootFaculty()] = facultyRequested;
+handle[Helper.getRootDepartment()] = departmentRequested;
+handle[Helper.getRootCourse()] = courseRequested;
+handle[Helper.getRootQuestion()] = questionRequested;
+
+var meth = {};
+meth["GET"] = getMethod;
+meth["POST"] = postMethod;
 
 
 

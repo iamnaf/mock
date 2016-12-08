@@ -1,0 +1,17 @@
+Faculty codes
+---------------------------
+1) Faculty of Engineering                                f0005
+2)Faculty of Law                                                    f0006
+3) Faculty of Agriculture                                  f0001
+4) Faculty of Live Science                                 f0007
+5) Faculty of Physical Science                        f0009
+6) Faculty of Social Science                             f0010
+7) Faculty of Management Science            f0008
+8) Faculty of Basic Medical Science            f0003
+9) Faculty of Art                                                     f0002
+10) Faculty of Education                                  f0004
+
+
+Department codes
+--------------------------------------
+1) 
