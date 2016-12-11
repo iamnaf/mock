@@ -12,7 +12,8 @@ class Helper{
     static getRootDepartment(){ return "/departments";}
     static getRootCourse(){return "/courses";}
     static getRootQuestion(){return "/questions";}
-    static getRoots(){return ["/faculties","/departments","/courses","/questions"];}
+    static getRootOption(){return "/options";}
+    static getRoots(){return ["/faculties","/departments","/courses","/questions","/options"];}
     static getRoot(){return "/";}
     static toSelectQuery(columns,table,query){
         if(Array.isArray(columns))var columns = columns.join(" , ");
@@ -24,6 +25,8 @@ class Helper{
         for(var i=0;i<props.length;i++){
             var sqs = String(props[i]+" = "+query[props[i]]);
             sqslist.push(sqs);
+        
+            
         }
         qs += sqslist.join(" AND ");
         qs+= ";";

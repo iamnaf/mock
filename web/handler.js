@@ -6,6 +6,7 @@ var Faculty = require("./models/faculty.js");
 var Department = require("./models/department.js");
 var Course = require("./models/course.js");
 var Question = require ("./models/question.js");
+var Option = require("./models/option.js")
 var sqlite3 = require("sqlite3").verbose();
 
 
@@ -14,6 +15,7 @@ var ft = dbh.getFacultyTable();
 var dt = dbh.getDepartmentTable();
 var ct = dbh.getCourseTable();
 var qt = dbh.getQuestionTable();
+var ot = dbh.getOptionTable();
 
 function  insertError(err){
     if(err){
@@ -51,6 +53,9 @@ function courseRequested(query,method,response){
 function questionRequested(query,method,response){
     meth[method](qt,"*",query,Question,response);
 }
+function optionRequested(query,method,response){
+    meth[method](ot,"*",query,Option,response)
+}
 
 
 function getMethod(table,columns,query,clas,response){
@@ -76,7 +81,11 @@ function getMethod(table,columns,query,clas,response){
 }
 function postMethod(table,columns,query,clas,response){
     var qs = Helper.toInsertQuery("letmepass",table,query);
-    db.exec(qs,insertError);
+    db.serialize(function(){
+        db.run("PRAGMA foreign_keys = ON");
+        db.exec(qs,insertError);
+
+    });
     response.writeHead(200,{"Content-Type":"text/plain"});
     response.write("insert succesful");
     response.end();
