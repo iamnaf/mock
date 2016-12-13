@@ -8,7 +8,7 @@ var Course = require("./models/course.js");
 var Question = require ("./models/question.js");
 var Option = require("./models/option.js")
 var sqlite3 = require("sqlite3").verbose();
-
+var fs = require("fs");
 
 var db = new sqlite3.Database(dbh.getName());
 var ft = dbh.getFacultyTable(); 
@@ -17,14 +17,6 @@ var ct = dbh.getCourseTable();
 var qt = dbh.getQuestionTable();
 var ot = dbh.getOptionTable();
 
-function  insertError(err){
-    if(err){
-        console.log("insert not successful");
-        console.log(err);
-        return;
-    }       
-    console.log("insert succesful")
-}
 function homeRequested(query,method,response){
     if(method === "GET"){
         response.writeHead(200,{"Content-Type":"text/json"});
@@ -58,6 +50,7 @@ function optionRequested(query,method,response){
 }
 
 
+
 function getMethod(table,columns,query,clas,response){
     var result = [];
     var qs = Helper.toSelectQuery(columns,table,query);
@@ -80,15 +73,32 @@ function getMethod(table,columns,query,clas,response){
 
 }
 function postMethod(table,columns,query,clas,response){
+    if(Helper.isObjectEmpty(query)){
+        console.log("no query"); 
+        response.write("No data to be inserted");
+        response.end();
+        return;
+    }
     var qs = Helper.toInsertQuery("letmepass",table,query);
     db.serialize(function(){
         db.run("PRAGMA foreign_keys = ON");
-        db.exec(qs,insertError);
+        db.exec(qs,function(err){
+            if(err){
+                console.log("insert not successful");
+                console.log(err);
+                response.write("insert not succesful");
+                response.end();
+                return
+
+            }
+            response.writeHead(200,{"Content-Type":"text/plain"});
+            response.write("insert succesful");
+            response.end();
+
+        });
 
     });
-    response.writeHead(200,{"Content-Type":"text/plain"});
-    response.write("insert succesful");
-    response.end();
+    
 
 }
 
@@ -98,6 +108,7 @@ handle[Helper.getRootFaculty()] = facultyRequested;
 handle[Helper.getRootDepartment()] = departmentRequested;
 handle[Helper.getRootCourse()] = courseRequested;
 handle[Helper.getRootQuestion()] = questionRequested;
+handle[Helper.getRootOption()] = optionRequested;
 
 var meth = {};
 meth["GET"] = getMethod;
