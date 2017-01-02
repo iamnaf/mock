@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Test Page</title>
+		<link type="text/css" rel="stylesheet" href="Css/testpage.css">
+		<script type="text/javascript" src="Scripts/testpage.js" ></script>
+		
+	</head>
+	<body>
+		<header>
+			<p>test page</p>
+		</header>
+		<div id="tableContainer">
+		<div id=tableRow">
+		<section id="main">
+			<form id="answerOptionForm">
+				<p><h2>Question no.</h2>Question text goes here</p>
+				<label><input id="option1" type="radio" name="optionRadio">Option 1</input></label><br>
+				<label><input id="option2" type="radio" name="optionRadio">Option 2</input></label><br>
+				<label><input id="option3" type="radio" name="optionRadio">Option 3</input></label><br>
+				<label><input id="option4" type="radio" name="optionRadio">Option 4</input></label><br>
+				<button id="previousButton" type="previous">Previous</button>
+				<button id="nextButton" type="next">Next</button>
+			</form>
+		</section>
+		<section id="sidebar">
+			<p>Course Name: <h2 id="courseName">name</h2></p><br>
+			<p>Course Code: <h2 id="courseCode">code</h2><p><br>
+			<p>Number of Questions: <h2 id="number">No</h2></p>
+			<p>Time given: <h2 id="time">time</h2></p>
+			<form id="submitButton" action="https://www.google.com">
+				<button id="submitButton" onClick="getConfirmation()" type="submit">Submit</button>
+			</form>
+		</section>
+		</div>
+		</div>
+		<footer>
+			&copy; 2016, easyTech Computer Based Test
+		</footer>
+
+</html>
