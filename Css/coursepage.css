@@ -1,0 +1,37 @@
+#header {
+    height: 108px;
+    text-align: center;
+    font-size: 200%;
+    background-color: #fffacd;
+    clear: both;
+    margin: 10px
+}
+
+#navigation {
+    height: 50px;
+    font-size: 100%;
+    background-color: #fffacd;
+    margin: 10px;
+    text-align: center;
+}
+
+#main {
+    background: #fffacd;
+    font-size: 200%;
+    margin: 10px;
+    text-align: center;
+}
+
+body {
+    background: black;
+}
+
+#footer {
+    font-size: 90%;
+    clear: both;
+    margin: 10px 10px 10px 10px;
+    text-align: center;
+    background-color: #7482ef;
+    padding: 15px;
+    font-size: 100%
+}
